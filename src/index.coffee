@@ -58,8 +58,14 @@ exports.compile = (input, options, callback) ->
         args.push val
       return
 
+    # Boolean values: false means do not pass the flag at all.
+    if typeof value == 'boolean' && value == false
+      return
+
     args.push "--#{key}"
-    args.push value
+    # Boolean values; true means emit without value.
+    if value != true
+      args.push value
 
   compiler = spawn JAVA_PATH, args
   stdout   = ''
